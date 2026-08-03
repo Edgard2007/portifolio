@@ -1,0 +1,16 @@
+{
+  "name": "Edgard Costa — Portfolio",
+  "short_name": "E·A Portfolio",
+  "description": "Portfólio de Edgard Costa, Engenheiro de Software com foco em IA e paixão por Astrofísica.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#05060f",
+  "theme_color": "#05060f",
+  "icons": [
+    {
+      "src": "/assets/icons/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Oracle Cloud Infrastructure AI Foundations badge">
+  <defs>
+    <linearGradient id="oci-g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#F80000" />
+      <stop offset="100%" stop-color="#3A0A0A" />
+    </linearGradient>
+  </defs>
+  <circle cx="60" cy="60" r="56" fill="url(#oci-g)" stroke="#ffffff" stroke-width="3" />
+  <text x="60" y="54" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#ffffff">OCI</text>
+  <text x="60" y="70" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#ffffff">AI</text>
+  <text x="60" y="84" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#ffffff">FOUNDATIONS</text>
+</svg>
