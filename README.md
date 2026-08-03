@@ -214,4 +214,4 @@ Essas duas partes são mais técnicas — dá pra editar sem saber Three.js/GSAP
 | Adicionar/remover um curso                    | `translations.js` → `courses.items`                          |
 | Trocar o PDF do currículo                     | `assets/cv-guilherme-andrade.pdf` (mesmo nome) ou o `href` no `index.html` |
 
-> **Heads up:** o arquivo `assets/cv-guilherme-andrade.pdf` não existe na pasta `assets/` — o botão "Baixar CV" está apontando pra um arquivo que não está no projeto (vai dar 404). Quando for adicionar seu currículo, ou salve o PDF exatamente com esse nome dentro de `assets/`, ou troque o `href` dos dois links `<a href="assets/cv-guilherme-andrade.pdf" ...>` no `index.html` (um no Hero, outro na seção de Contato) pro nome de arquivo que você preferir.
+
