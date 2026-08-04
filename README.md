@@ -214,4 +214,3 @@ Essas duas partes são mais técnicas — dá pra editar sem saber Three.js/GSAP
 | Adicionar/remover um curso                    | `translations.js` → `courses.items`                          |
 | Trocar o PDF do currículo                     | `assets/cv-guilherme-andrade.pdf` (mesmo nome) ou o `href` no `index.html` |
 
-

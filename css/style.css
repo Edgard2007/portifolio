@@ -97,6 +97,7 @@
 
 html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -572,16 +573,29 @@ button {
     backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--color-border);
     z-index: 899;
+    max-height: calc(100svh - var(--header-height));
+    overflow-y: auto;
+    transition: top var(--transition-medium);
+}
+/* O header encolhe de 84px pra 64px ao rolar (.is-scrolled) — sem isso, o
+   menu abriria com um vão vazio entre ele e o header. */
+.site-header.is-scrolled + .mobile-menu {
+    top: 64px;
+    max-height: calc(100svh - 64px);
 }
 .mobile-menu ul {
     display: flex;
     flex-direction: column;
-    padding: var(--space-md) clamp(1.25rem, 4vw, 2.5rem);
+    padding: var(--space-md) clamp(1.25rem, 4vw, 2.5rem) 0;
     gap: var(--space-sm);
 }
 .mobile-menu a {
     font-family: var(--font-display);
     font-size: 1.15rem;
+}
+.mobile-menu__locale {
+    width: fit-content;
+    margin: var(--space-md) clamp(1.25rem, 4vw, 2.5rem) var(--space-md);
 }
 
 /* ------------------------------- HERO ----------------------------------- */
@@ -1259,8 +1273,9 @@ button {
 }
 .certificate-card__meta {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
-    gap: 0.5rem;
+    gap: 0.35rem 0.5rem;
     font-family: var(--font-mono);
     font-size: 0.72rem;
     color: var(--color-text-muted);
@@ -1332,6 +1347,12 @@ button {
     display: grid;
     gap: var(--space-lg);
 }
+/* Sem isso, um item do grid nunca encolhe abaixo do tamanho intrínseco do
+   seu conteúdo (min-width:auto é o padrão do CSS Grid) — o que já causou
+   overflow horizontal aqui por causa dos campos do formulário. */
+.contact__grid > * {
+    min-width: 0;
+}
 
 .contact-form {
     display: grid;
@@ -1355,6 +1376,7 @@ button {
 }
 .form-field input,
 .form-field textarea {
+    width: 100%;
     font: inherit;
     padding: 0.85rem 1rem;
     border-radius: var(--radius-sm);
@@ -1429,6 +1451,18 @@ button {
 
 /* ---------------------------- 7. RESPONSIVIDADE -------------------------------- */
 
+/* Celulares estreitos: o respiro vertical entre seções (--space-2xl: 9rem)
+   foi pensado pra telas grandes; em telas pequenas isso vira muito espaço
+   vazio antes do usuário chegar ao próximo conteúdo. */
+@media (max-width: 479px) {
+    :root {
+        --space-2xl: 5rem;
+    }
+    .about__stats {
+        grid-template-columns: 1fr;
+    }
+}
+
 @media (min-width: 720px) {
     .about__stats,
     .education-grid {
@@ -1483,181 +1517,3 @@ button {
     }
 }
 
-/* Certificate Cards - similar style to project cards */
-.certificate-card {
-    display: flex;
-    align-items: flex-start;
-    gap: var(--spacing-md);
-    padding: var(--spacing-lg);
-    background: var(--card-bg);
-    border-radius: var(--radius-md);
-    border: 1px solid var(--border-color);
-    transition: all var(--transition-medium);
-    position: relative;
-    overflow: hidden;
-}
-
-.certificate-card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
-    border-color: var(--primary);
-}
-
-.certificate-card__icon {
-    flex-shrink: 0;
-    width: 48px;
-    height: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-    background: var(--primary-light);
-    border-radius: var(--radius-sm);
-    color: var(--primary);
-}
-
-.certificate-card__body {
-    flex: 1;
-    min-width: 0;
-}
-
-.certificate-card__header {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: var(--spacing-xs) var(--spacing-sm);
-    margin-bottom: var(--spacing-xs);
-}
-
-.certificate-card__title {
-    font-size: var(--font-size-lg);
-    font-weight: 600;
-    color: var(--text-primary);
-    margin: 0;
-}
-
-.certificate-card__org {
-    font-size: var(--font-size-sm);
-    color: var(--primary);
-    font-weight: 500;
-}
-
-.certificate-card__date {
-    font-size: var(--font-size-sm);
-    color: var(--text-muted);
-    margin-left: auto;
-}
-
-.certificate-card__description {
-    color: var(--text-secondary);
-    font-size: var(--font-size-sm);
-    margin: var(--spacing-xs) 0 var(--spacing-sm);
-    line-height: 1.6;
-}
-
-.certificate-card__tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--spacing-xs);
-    list-style: none;
-    padding: 0;
-    margin: 0 0 var(--spacing-sm);
-}
-
-.certificate-card__tag {
-    background: var(--tag-bg);
-    color: var(--tag-text);
-    padding: 0.2rem 0.7rem;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    font-weight: 500;
-    letter-spacing: 0.3px;
-}
-
-.certificate-card__actions {
-    display: flex;
-    gap: var(--spacing-sm);
-    margin-top: var(--spacing-sm);
-}
-
-.certificate-card__link {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--spacing-xs);
-    font-size: var(--font-size-sm);
-    color: var(--primary);
-    text-decoration: none;
-    padding: var(--spacing-xs) var(--spacing-sm);
-    border-radius: var(--radius-sm);
-    transition: all var(--transition-fast);
-    font-weight: 500;
-}
-
-.certificate-card__link:hover {
-    background: var(--primary-light);
-    color: var(--primary-hover);
-}
-
-.certificate-card__link--primary {
-    background: var(--primary);
-    color: white;
-}
-
-.certificate-card__link--primary:hover {
-    background: var(--primary-hover);
-    color: white;
-}
-
-/* Certificate filters - same as project filters */
-.certificates-filters {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--spacing-sm);
-    justify-content: center;
-    margin-bottom: var(--spacing-xl);
-}
-
-.certificates-filters button {
-    padding: 0.5rem 1.2rem;
-    border: 1px solid var(--border-color);
-    border-radius: 30px;
-    background: transparent;
-    color: var(--text-secondary);
-    font-size: var(--font-size-sm);
-    font-weight: 500;
-    cursor: pointer;
-    transition: all var(--transition-fast);
-}
-
-.certificates-filters button:hover {
-    border-color: var(--primary);
-    color: var(--text-primary);
-}
-
-.certificates-filters button.is-active {
-    background: var(--primary);
-    color: white;
-    border-color: var(--primary);
-}
-
-.certificates-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-    gap: var(--spacing-lg);
-}
-
-@media (max-width: 768px) {
-    .certificate-card {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .certificate-card__header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .certificate-card__date {
-        margin-left: 0;
-    }
-}

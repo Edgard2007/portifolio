@@ -152,6 +152,15 @@
                 <li><a href="#experience" data-i18n="nav.experience">Experiência</a></li>
                 <li><a href="#contact" data-i18n="nav.contact">Contato</a></li>
             </ul>
+            <!-- O seletor de idioma do header some abaixo de 960px (ver
+                 [data-theme] .header-controls .locale-switcher no CSS); esta
+                 cópia usa os mesmos atributos [data-locale-option], então o
+                 main.js já wireia o clique sozinho — nenhum JS extra aqui. -->
+            <div class="locale-switcher mobile-menu__locale" role="group" aria-label="Selecionar idioma">
+                <button type="button" data-locale-option="pt-BR" aria-label="Português">PT</button>
+                <button type="button" data-locale-option="en-US" aria-label="English">EN</button>
+                <button type="button" data-locale-option="de-DE" aria-label="Deutsch">DE</button>
+            </div>
         </nav>
 
         <main id="main-content">
@@ -182,7 +191,7 @@
                     <div class="hero__portrait" data-hero-portrait aria-hidden="true">
                         <div class="hero__portrait-ring"></div>
                         <div class="hero__portrait-glass">
-                            <span class="hero__portrait-initials">GA</span>
+                            <span class="hero__portrait-initials">EC</span>
                         </div>
                     </div>
                 </div>
@@ -211,7 +220,7 @@
                             >
                         </div>
                         <div class="stat" data-reveal>
-                            <span class="stat__value" data-count-to="15+">0</span>
+                            <span class="stat__value" data-count-to="6+">0</span>
                             <span class="stat__label" data-i18n="about.stats.1.label">Tecnologias em uso ativo</span>
                         </div>
                         <div class="stat" data-reveal>
