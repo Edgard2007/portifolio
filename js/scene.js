@@ -123,6 +123,11 @@ export class SpaceScene {
     // pausada, sem custo de render/composer, em vez de rodar escondida atrás
     // do fundo minimalista.
     this.active = true;
+    // Pausa externa e temporária (ver setPaused) — usada pela sequência de
+    // ingresso (js/intro.js) para tirar o composer/bloom/lente da disputa
+    // pela GPU/thread principal enquanto o overlay anima por cima. Some do
+    // frame igual a "active=false", mas sem mexer no tema.
+    this.paused = false;
 
     this._initRenderer();
     this._initCamera();
@@ -607,14 +612,25 @@ export class SpaceScene {
     this.glowMaterial.uniforms.glowColor.value = new THREE.Color(palette.horizonGlow);
   }
 
+  /**
+   * Pausa/retoma o loop de render sem alterar o tema. O loop de rAF continua
+   * agendado (custo desprezível) para retomar instantaneamente ao chamar
+   * setPaused(false) — mesma técnica já usada por `active` no tema claro.
+   * @param {boolean} paused
+   */
+  setPaused(paused) {
+    this.paused = paused;
+  }
+
   /** Loop de animação principal — chamado a cada frame via requestAnimationFrame. */
   animate() {
-    // Tema claro: não há buraco negro para desenhar. Evita o getDelta() (que
+    // Tema claro (active=false) ou pausa externa (paused=true, ver
+    // setPaused): nenhum dos dois desenha nada. Evita o getDelta() (que
     // manteria o clock avançando) e, principalmente, evita compositor/bloom/
-    // shader de lente rodando na GPU atrás de um canvas invisível — o loop
-    // continua agendado (custo desprezível) só para retomar instantaneamente
-    // quando o usuário voltar ao tema escuro.
-    if (!this.active) {
+    // shader de lente rodando na GPU sem necessidade — o loop continua
+    // agendado (custo desprezível) só para retomar instantaneamente quando
+    // preciso.
+    if (!this.active || this.paused) {
       requestAnimationFrame(() => this.animate());
       return;
     }

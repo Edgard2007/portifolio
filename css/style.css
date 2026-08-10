@@ -43,6 +43,9 @@
     /* Vidro fosco — usado nos cards para isolar o conteúdo do fundo 3D */
     --glass-blur: blur(22px) saturate(160%);
     --glass-shadow: 0 20px 45px -25px rgba(0, 0, 0, 0.55);
+
+    /* Sequência de ingresso (ver seção 5). */
+    --ingress-z: 3000;
 }
 
 /* Tema escuro (padrão) — nebulosas profundas */
@@ -344,6 +347,75 @@ button {
     background-size: 64px 64px;
     mask-image: radial-gradient(circle at 50% 0%, #000 0%, transparent 75%);
 }
+/* Planta do foguete: mesma peça técnica da sequência de ingresso, mas como
+   fundo permanente. Sangra pela borda direita e usa uma máscara de
+   gradiente que apaga o lado voltado para a coluna de texto — isso garante
+   legibilidade em qualquer largura de tela, sem depender de calcular a
+   posição exata pra cada breakpoint. Só transform/opacity animam (mesma
+   regra dos orbs), nada de JS: é um elemento que vive a vida inteira da
+   página, não uma sequência com fim. */
+.rocket-schema {
+    position: absolute;
+    top: 3%;
+    right: 1%;
+    width: clamp(360px, 36vw, 600px);
+    height: auto;
+    opacity: 0.14;
+    transform-origin: 30% 40%;
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, transparent 3%, #000 18%, #000 100%);
+    mask-image: linear-gradient(to right, transparent 0%, transparent 3%, #000 18%, #000 100%);
+    animation: rocketSchemaDrift 58s ease-in-out infinite;
+}
+.rocket-schema__line {
+    fill: none;
+    stroke: var(--color-text);
+    stroke-width: 1.5;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+}
+.rocket-schema__line--thin {
+    stroke-width: 1;
+    stroke: var(--color-text-faint);
+}
+/* Linhas de chamada + legendas: mesmo espírito da ilustração técnica de
+   referência (linha em cotovelo saindo de um ponto do desenho até um rótulo
+   curto). Ficam mais discretas que o contorno do foguete — são uma camada
+   de detalhe, não o foco. */
+.rocket-schema__leader {
+    fill: none;
+    stroke: var(--color-text-faint);
+    stroke-width: 0.75;
+}
+.rocket-schema__label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    fill: var(--color-text-muted);
+}
+@keyframes rocketSchemaDrift {
+    0%,
+    100% {
+        transform: translateY(0) rotate(-4deg);
+        opacity: 0.14;
+    }
+    50% {
+        transform: translateY(-22px) rotate(-2deg);
+        opacity: 0.18;
+    }
+}
+@media (max-width: 959px) {
+    .rocket-schema {
+        width: clamp(320px, 52vw, 460px);
+        right: 1%;
+    }
+}
+@media (max-width: 640px) {
+    /* Sem margem sobrando pra sangrar sem cobrir o texto — prioriza leitura. */
+    .rocket-schema {
+        display: none;
+    }
+}
+
 .light-orb {
     position: absolute;
     border-radius: 50%;
@@ -388,7 +460,8 @@ button {
     50% { transform: translate(-2vw, 2vh) scale(1.08); }
 }
 @media (prefers-reduced-motion: reduce) {
-    .light-orb {
+    .light-orb,
+    .rocket-schema {
         animation: none;
     }
 }
@@ -977,8 +1050,8 @@ button {
 
 .tech-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.85rem;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
 }
 
 .tech-card {
@@ -1426,6 +1499,246 @@ button {
     gap: 0.5rem;
     font-size: 0.8rem;
     color: var(--color-text-faint);
+}
+
+/* --------------------- 5. SEQUÊNCIA DE INGRESSO (INTRO) ------------------------ */
+/* Tela cheia exibida uma vez por sessão de navegação (ver js/intro.js),
+   antes do conteúdo real. Dois palcos convivem no mesmo elemento — qual
+   deles fica visível é decidido só por CSS, a partir de [data-theme]:
+   o tema escuro mostra o horizonte de eventos, o claro mostra a planta do
+   foguete. O JS só anima o palco que já está visível. */
+#ingress {
+    position: fixed;
+    inset: 0;
+    z-index: var(--ingress-z);
+    overflow: hidden;
+    cursor: default;
+}
+#ingress[hidden] {
+    display: none;
+}
+
+.ingress__stage {
+    position: absolute;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: var(--space-md);
+    padding: var(--space-lg);
+    will-change: opacity, transform;
+}
+[data-theme="dark"] .ingress__stage--horizon {
+    display: flex;
+    background: var(--color-bg);
+}
+[data-theme="light"] .ingress__stage--blueprint {
+    display: flex;
+    background: var(--color-bg);
+}
+
+/* Envelope único que a JS desvanece de uma vez (evita qualquer traço
+   aparecer "cru" — sem dasharray — antes do primeiro frame animado). */
+.ingress__panel {
+    opacity: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-md);
+    max-width: 30rem;
+    will-change: opacity;
+}
+
+.ingress__art {
+    width: min(60vw, 380px);
+    height: auto;
+    overflow: visible;
+}
+
+/* --- Palco escuro: horizonte de eventos ------------------------------- */
+.ingress__core {
+    fill: var(--accent-violet);
+    filter: drop-shadow(0 0 26px var(--accent-violet));
+}
+.ingress-ring--horizon {
+    fill: none;
+    stroke-width: 1.4;
+}
+.ingress-ring--horizon:nth-of-type(1) {
+    stroke: var(--accent-cyan);
+}
+.ingress-ring--horizon:nth-of-type(2) {
+    stroke: var(--accent-violet);
+}
+.ingress-ring--horizon:nth-of-type(3) {
+    stroke: var(--accent-warm);
+}
+.ingress__rings {
+    transform-origin: 320px 320px;
+    animation: ingressOrbit 48s linear infinite;
+}
+.ingress__tick {
+    stroke: var(--color-text-faint);
+    stroke-width: 1.2;
+}
+.ingress__photon {
+    fill: var(--accent-cyan);
+    animation: ingressPhotonPulse 2.6s ease-in-out infinite;
+}
+.ingress__photon:nth-of-type(2) {
+    animation-delay: -0.8s;
+}
+.ingress__photon:nth-of-type(3) {
+    animation-delay: -1.6s;
+}
+.ingress__star {
+    fill: var(--color-text-faint);
+}
+@keyframes ingressOrbit {
+    to {
+        transform: rotate(360deg);
+    }
+}
+@keyframes ingressPhotonPulse {
+    0%,
+    100% {
+        opacity: 0.35;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.4);
+    }
+}
+
+/* --- Palco claro: planta do foguete ------------------------------------
+   Tinta escura sobre papel claro — as próprias --color-text/--color-bg do
+   tema claro, sem paleta própria: por isso a transição de saída (ver
+   exitStage em intro.js) não muda nada visualmente além de sumir com o
+   traço, o "papel" já é a cor real da página por baixo. */
+.ingress-line--blueprint {
+    fill: none;
+    stroke: var(--color-text);
+    stroke-width: 1.6;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+}
+.ingress-line--blueprint.is-thin {
+    stroke-width: 1;
+    stroke: var(--color-text-faint);
+}
+.ingress__label {
+    font-family: var(--font-mono);
+    fill: var(--color-text);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    opacity: 0;
+}
+.ingress__label.is-dim {
+    fill: var(--color-text-faint);
+}
+.ingress__stamp {
+    fill: none;
+    stroke: var(--color-text-faint);
+    stroke-width: 1;
+    opacity: 0;
+}
+
+/* --- Telemetria e medidor (comuns aos dois palcos) --------------------- */
+.ingress__telemetry {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0 var(--space-md);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0;
+    text-align: center;
+}
+.ingress__telemetry span {
+    opacity: 0;
+}
+
+.ingress__meter {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    width: 100%;
+    max-width: 15rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-text-faint);
+}
+.ingress__meter-track {
+    position: relative;
+    flex: 1;
+    height: 2px;
+    background: var(--color-border);
+}
+.ingress__meter-fill {
+    position: absolute;
+    inset: 0;
+    width: 0%;
+    background: var(--accent-cyan);
+    transform-origin: left;
+}
+.ingress__meter-value {
+    min-width: 2.6em;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+.ingress__skip {
+    position: absolute;
+    z-index: 1;
+    top: var(--space-md);
+    right: var(--space-md);
+    background: none;
+    border: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.5rem 0.9rem;
+    border-radius: 999px;
+    cursor: pointer;
+    transition:
+        border-color var(--transition-fast),
+        color var(--transition-fast);
+}
+.ingress__skip:hover,
+.ingress__skip:focus-visible {
+    color: var(--color-text);
+    border-color: var(--color-text-muted);
+}
+
+/* Trava o scroll da página enquanto a sequência roda (ver lockScroll em
+   intro.js) — sem isso, dava pra rolar a página "por baixo" da tela cheia. */
+html.has-ingress,
+html.has-ingress body {
+    overflow: hidden;
+    height: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ingress__rings,
+    .ingress__photon {
+        animation: none;
+    }
+}
+
+@media (max-width: 479px) {
+    .ingress__art {
+        width: min(74vw, 300px);
+    }
+    .ingress__telemetry {
+        font-size: 0.66rem;
+    }
 }
 
 /* --------------------------- 6. MICROINTERAÇÕES -------------------------------- */

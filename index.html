@@ -52,13 +52,157 @@
             {
                 "imports": {
                     "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-                    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+                    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/",
+                    "animejs": "https://cdn.jsdelivr.net/npm/animejs@4.5.0/+esm"
                 }
             }
         </script>
     </head>
     <body>
         <a class="skip-link" href="#main-content">Pular para o conteúdo</a>
+
+        <!-- ============================ INGRESSO =============================
+             Tela cheia exibida uma vez por sessão, antes do conteúdo (ver
+             js/intro.js, animado com anime.js). Os dois palcos ficam ambos no
+             DOM; [data-theme] decide via CSS qual aparece (mesma técnica já
+             usada em #space-canvas / #light-backdrop), e o JS só anima o que
+             está visível. Não captura navegação por teclado além do próprio
+             botão de pular — o resto da página segue focável normalmente. -->
+        <div id="ingress" class="ingress" data-ingress>
+            <button type="button" class="ingress__skip" data-ingress-skip data-i18n="ingress.skip">
+                Pular introdução
+            </button>
+
+            <!-- Palco escuro: horizonte de eventos -->
+            <div class="ingress__stage ingress__stage--horizon" data-ingress-horizon>
+                <div class="ingress__panel" data-ingress-panel>
+                    <svg class="ingress__art" viewBox="0 0 640 640" aria-hidden="true">
+                        <g class="ingress__stars">
+                            <circle class="ingress__star" cx="90" cy="110" r="1.6" />
+                            <circle class="ingress__star" cx="540" cy="95" r="1.2" />
+                            <circle class="ingress__star" cx="580" cy="420" r="1.4" />
+                            <circle class="ingress__star" cx="60" cy="480" r="1.3" />
+                            <circle class="ingress__star" cx="150" cy="560" r="1.1" />
+                            <circle class="ingress__star" cx="500" cy="560" r="1.5" />
+                            <circle class="ingress__star" cx="600" cy="220" r="1.2" />
+                            <circle class="ingress__star" cx="40" cy="260" r="1.4" />
+                        </g>
+                        <g class="ingress__ticks" data-ingress-ticks>
+                            <line class="ingress__tick" x1="376" y1="320" x2="394" y2="320" />
+                            <line class="ingress__tick" x1="359.6" y1="359.6" x2="372.3" y2="372.3" />
+                            <line class="ingress__tick" x1="320" y1="376" x2="320" y2="394" />
+                            <line class="ingress__tick" x1="280.4" y1="359.6" x2="267.7" y2="372.3" />
+                            <line class="ingress__tick" x1="264" y1="320" x2="246" y2="320" />
+                            <line class="ingress__tick" x1="280.4" y1="280.4" x2="267.7" y2="267.7" />
+                            <line class="ingress__tick" x1="320" y1="264" x2="320" y2="246" />
+                            <line class="ingress__tick" x1="359.6" y1="280.4" x2="372.3" y2="267.7" />
+                        </g>
+                        <g class="ingress__rings" data-ingress-rings>
+                            <path
+                                class="ingress-ring--horizon"
+                                transform="rotate(-11 320 320)"
+                                d="M70,320 A250,68 0 1,0 570,320 A250,68 0 1,0 70,320"
+                            />
+                            <path
+                                class="ingress-ring--horizon"
+                                transform="rotate(-6 320 320)"
+                                d="M130,320 A190,52 0 1,0 510,320 A190,52 0 1,0 130,320"
+                            />
+                            <path
+                                class="ingress-ring--horizon"
+                                transform="rotate(5 320 320)"
+                                d="M180,320 A140,38 0 1,0 460,320 A140,38 0 1,0 180,320"
+                            />
+                        </g>
+                        <circle class="ingress__core" data-ingress-core cx="320" cy="320" r="40" />
+                        <circle class="ingress__photon" cx="505" cy="300" r="3.4" />
+                        <circle class="ingress__photon" cx="150" cy="345" r="3.4" />
+                        <circle class="ingress__photon" cx="330" cy="258" r="3.4" />
+                    </svg>
+                    <p class="ingress__telemetry" data-ingress-telemetry>
+                        <span data-i18n="ingress.horizon.line1">Sgr A* — horizonte de eventos</span>
+                        <span data-i18n="ingress.horizon.line2">RA 05h 35m · DEC −05° 23′</span>
+                        <span data-i18n="ingress.horizon.line3">Sincronizando órbita</span>
+                    </p>
+                    <div class="ingress__meter">
+                        <span data-i18n="ingress.meterLabel">Aproximação</span>
+                        <span class="ingress__meter-track"
+                            ><span class="ingress__meter-fill" data-ingress-fill></span
+                        ></span>
+                        <span class="ingress__meter-value" data-ingress-value>0%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Palco claro: planta técnica do foguete -->
+            <div class="ingress__stage ingress__stage--blueprint" data-ingress-blueprint>
+                <div class="ingress__panel" data-ingress-panel>
+                    <svg class="ingress__art" viewBox="0 0 640 640" aria-hidden="true">
+                        <line
+                            class="ingress-line--blueprint is-thin"
+                            data-ingress-centerline
+                            x1="320"
+                            y1="30"
+                            x2="320"
+                            y2="575"
+                        />
+                        <path
+                            class="ingress-line--blueprint"
+                            data-ingress-hull
+                            d="M320,70 L290,200 L290,420 L210,458 L210,470 L430,470 L430,458 L350,420 L350,200 Z"
+                        />
+                        <line class="ingress-line--blueprint is-thin" x1="290" y1="260" x2="350" y2="260" />
+                        <line class="ingress-line--blueprint is-thin" x1="290" y1="340" x2="350" y2="340" />
+                        <!-- Cluster de propulsores: central (mais alto) + 2 internos + 2 externos, mais abertos -->
+                        <path class="ingress-line--blueprint" data-ingress-fin d="M296,470 L344,470 L320,575 Z" />
+                        <path class="ingress-line--blueprint" data-ingress-fin d="M246,470 L298,470 L255,550 Z" />
+                        <path class="ingress-line--blueprint" data-ingress-fin d="M342,470 L394,470 L385,550 Z" />
+                        <circle
+                            class="ingress-line--blueprint is-thin"
+                            data-ingress-window
+                            cx="320"
+                            cy="300"
+                            r="22"
+                        />
+                        <circle
+                            class="ingress-line--blueprint is-thin"
+                            data-ingress-window
+                            cx="320"
+                            cy="300"
+                            r="13"
+                        />
+                        <path
+                            class="ingress-line--blueprint is-thin"
+                            data-ingress-dimension
+                            d="M196,584 L196,596 M196,590 L444,590 M444,584 L444,596"
+                        />
+                        <path
+                            class="ingress-line--blueprint is-thin"
+                            data-ingress-dimension
+                            d="M158,30 L182,30 M170,30 L170,575 M158,575 L182,575"
+                        />
+                        <text class="ingress__label" data-ingress-fade x="270" y="612">Ø 4.9 M</text>
+                        <text class="ingress__label" data-ingress-fade x="100" y="306">18.6 M</text>
+                        <rect class="ingress__stamp" data-ingress-fade x="480" y="200" width="140" height="56" />
+                        <text class="ingress__label" data-ingress-fade x="490" y="218">MOD. EC-1</text>
+                        <text class="ingress__label is-dim" data-ingress-fade x="490" y="236">ESC. 1:120</text>
+                        <text class="ingress__label is-dim" data-ingress-fade x="490" y="254">REV. A</text>
+                    </svg>
+                    <p class="ingress__telemetry" data-ingress-telemetry>
+                        <span data-i18n="ingress.blueprint.line1">Modelo EC-1 · propulsor experimental</span>
+                        <span data-i18n="ingress.blueprint.line2">Escala 1:120</span>
+                        <span data-i18n="ingress.blueprint.line3">Status: pré-lançamento</span>
+                    </p>
+                    <div class="ingress__meter">
+                        <span data-i18n="ingress.meterLabel">Aproximação</span>
+                        <span class="ingress__meter-track"
+                            ><span class="ingress__meter-fill" data-ingress-fill></span
+                        ></span>
+                        <span class="ingress__meter-value" data-ingress-value>0%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- Fundo 3D imersivo (Three.js) — puramente decorativo, nunca captura foco/cliques.
              Exclusivo do tema escuro: escondido via CSS e com o loop de render pausado
@@ -70,8 +214,49 @@
         <div id="scene-scrim" aria-hidden="true"></div>
 
         <!-- Fundo minimalista do tema claro: substitui o buraco negro por um cenário
-             discreto (gradiente, grid fino e orbs com deriva lenta), focado em leitura. -->
+             discreto (gradiente, grid fino, a planta de um foguete com linhas de
+             chamada e orbs com deriva lenta), focado em leitura. A planta reaproveita
+             a peça técnica da sequência de ingresso, com classes próprias (ver
+             .rocket-schema em style.css): aqui ela é permanente e some por trás do
+             conteúdo via máscara de gradiente, não uma sequência que termina como
+             intro.js. As linhas de chamada + legendas (estilo ilustração técnica/de
+             patente) fanam todas para a direita, o lado que a máscara mantém visível. -->
         <div id="light-backdrop" aria-hidden="true">
+            <svg
+                class="rocket-schema"
+                viewBox="140 20 560 580"
+                preserveAspectRatio="xMidYMid meet"
+                aria-hidden="true"
+            >
+                <line class="rocket-schema__line rocket-schema__line--thin" x1="320" y1="30" x2="320" y2="575" />
+                <path
+                    class="rocket-schema__line rocket-schema__hull"
+                    d="M320,70 L290,200 L290,420 L210,458 L210,470 L430,470 L430,458 L350,420 L350,200 Z"
+                />
+                <line class="rocket-schema__line rocket-schema__line--thin" x1="290" y1="260" x2="350" y2="260" />
+                <line class="rocket-schema__line rocket-schema__line--thin" x1="290" y1="340" x2="350" y2="340" />
+                <path class="rocket-schema__line" d="M296,470 L344,470 L320,575 Z" />
+                <path class="rocket-schema__line" d="M246,470 L298,470 L255,550 Z" />
+                <path class="rocket-schema__line" d="M342,470 L394,470 L385,550 Z" />
+                <circle class="rocket-schema__line rocket-schema__line--thin" cx="320" cy="300" r="22" />
+                <circle class="rocket-schema__line rocket-schema__line--thin" cx="320" cy="300" r="13" />
+
+                <!-- Grupo superior: nariz, fuselagem, vigia -->
+                <path class="rocket-schema__leader" d="M320,70 L520,50 L585,50" />
+                <text class="rocket-schema__label" x="590" y="54">OGIVA</text>
+                <path class="rocket-schema__leader" d="M350,250 L520,100 L585,100" />
+                <text class="rocket-schema__label" x="590" y="104">FUSELAGEM</text>
+                <path class="rocket-schema__leader" d="M342,300 L520,150 L585,150" />
+                <text class="rocket-schema__label" x="590" y="154">VIGIA</text>
+
+                <!-- Grupo inferior: tanque e cluster de propulsores -->
+                <path class="rocket-schema__leader" d="M350,400 L520,420 L585,420" />
+                <text class="rocket-schema__label" x="590" y="424">TANQUE LOX</text>
+                <path class="rocket-schema__leader" d="M435,522 L520,470 L585,470" />
+                <text class="rocket-schema__label" x="590" y="474">BOOSTER</text>
+                <path class="rocket-schema__leader" d="M320,575 L520,520 L585,520" />
+                <text class="rocket-schema__label" x="590" y="524">MOTOR CENTRAL</text>
+            </svg>
             <span class="light-orb light-orb--1"></span>
             <span class="light-orb light-orb--2"></span>
             <span class="light-orb light-orb--3"></span>
@@ -179,7 +364,7 @@
                             Construo software com a mesma precisão que se observa o cosmos.
                         </p>
                         <div class="hero__actions" data-hero-actions>
-                            <a class="btn" href="assets/cv-guilherme-andrade.pdf" download data-ripple>
+                            <a class="btn" href="assets/cv-edgard-costa.pdf" download data-ripple>
                                 <span data-i18n="hero.ctaPrimary">Baixar CV</span>
                             </a>
                             <a class="btn btn--ghost" href="#projects" data-ripple>
@@ -353,13 +538,13 @@
                             >
                                 <span data-i18n="contact.links.github">GitHub</span>
                             </a>
-                            <a href="https://linkedin.com/" target="_blank" rel="noopener noreferrer" data-ripple>
+                            <a href="https://www.linkedin.com/in/edgarddev/" target="_blank" rel="noopener noreferrer" data-ripple>
                                 <span data-i18n="contact.links.linkedin">LinkedIn</span>
                             </a>
                             <a href="mailto:edgard.costa2007@gmail.com" data-ripple>
                                 <span data-i18n="contact.links.email">E-mail</span>
                             </a>
-                            <a href="assets/cv-guilherme-andrade.pdf" download data-ripple>
+                            <a href="assets/cv-edgard-costa.pdf" download data-ripple>
                                 <span data-i18n="contact.links.resume">Currículo</span>
                             </a>
                         </div>

@@ -28,6 +28,7 @@ import {
 } from "./animations.js";
 import { SpaceScene } from "./scene.js";
 import { resolveTranslation, translations } from "./translations.js";
+import { playIngressSequence } from "./intro.js";
 
 // Chaves usadas no localStorage — apenas preferências de UI, nunca dados pessoais.
 const STORAGE_KEYS = {
@@ -48,18 +49,18 @@ let stopTypewriter = () => {};
  * README.md, seção "Tecnologias", para o passo a passo com exemplo.
  */
 const TECH_STACK = [
-    { name: "HTML5", glyph: "H5" },
-    { name: "CSS3", glyph: "C3" },
-    { name: "JavaScript", glyph: "JS" },
-    { name: "TypeScript", glyph: "TS" },
-    { name: "Java", glyph: "Jv" },
-    { name: "Node.js", glyph: "Nd" },
-    { name: "React", glyph: "Rx" },
-    { name: "Next.js", glyph: "Nx" },
-    { name: "MySQL", glyph: "My" },
-    { name: "C", glyph: "C" },
-    { name: "TensorFlow", glyph: "Tf" },
-    { name: "OpenAI API", glyph: "AI" },
+    { name: "HTML5", glyph: "H5", icon: "assets/images/tech/html-5.svg" },
+    { name: "CSS3", glyph: "C3", icon: "assets/images/tech/css-3.svg" },
+    { name: "JavaScript", glyph: "JS", icon: "assets/images/tech/javascript-logo.svg" },
+    { name: "TypeScript", glyph: "TS", icon: "assets/images/tech/typescript-icon.svg" },
+    { name: "Java", glyph: "Jv", icon: "assets/images/tech/java-4-logo.svg" },
+    { name: "Node.js", glyph: "Nd", icon: "assets/images/tech/nodejs-icon.svg" },
+    { name: "React", glyph: "Rx", icon: "assets/images/tech/react-1-logo.svg" },
+    { name: "Next.js", glyph: "Nx", icon: "assets/images/tech/nextjs-icon.svg" },
+    { name: "MySQL", glyph: "My", icon: "assets/images/tech/mysql.svg" },
+    { name: "Github", glyph: "GH", icon: "assets/images/tech/Octicons-mark-github.svg" },
+    { name: "Claude Code", glyph: "CC", icon: "assets/images/tech/claudecode-color.svg" },
+    { name: "Cursor", glyph: "CR", icon: "assets/images/tech/cursor.svg" },
     // Exemplo de como fica com ícone de imagem (descomente e ajuste o caminho):
     // { name: "React", glyph: "Rx", icon: "assets/images/tech/react.svg" },
 ];
@@ -128,6 +129,8 @@ function applyStaticTranslations(locale) {
 
     document.documentElement.setAttribute("lang", locale.split("-")[0]);
 }
+
+// PROJETOS
 
 /** Repopula todas as seções orientadas a dados (que não usam [data-i18n] direto). */
 function refreshDynamicSections(locale) {
@@ -296,6 +299,7 @@ function renderTechGrid() {
         container.appendChild(card);
     });
 }
+
 
 function renderProjectCards(locale) {
     const container = document.querySelector("[data-projects-grid]");
@@ -505,9 +509,12 @@ function initScene() {
     return scene;
 }
 
-function bootstrap() {
+async function bootstrap() {
     const scene = initScene();
 
+    // Tema e idioma precisam estar resolvidos antes da sequência de
+    // ingresso: ela decide o palco pelo data-theme e usa os textos
+    // data-i18n já preenchidos por initLanguageSwitcher.
     initThemeToggle(scene);
     initLanguageSwitcher();
     initMobileMenu();
@@ -518,6 +525,15 @@ function bootstrap() {
     initScrollProgressBar(document.querySelector("[data-scroll-progress]"));
     initCustomCursor(document.querySelector("[data-custom-cursor]"));
     initRippleEffect();
+
+    // Pausa o composer/bloom/lente da cena 3D enquanto o overlay de
+    // ingresso ocupa a tela: os dois disputando a mesma GPU/thread
+    // principal era a causa do engasgo visível na abertura. A cena
+    // continua com o loop de rAF agendado (custo desprezível) e retoma
+    // instantaneamente assim que a sequência termina.
+    scene.setPaused(true);
+    await playIngressSequence();
+    scene.setPaused(false);
 
     playHeroIntro();
     initScrollReveals();

@@ -1,6 +1,6 @@
 # Portfólio — Edgard Costa
 
-Site estático (sem build, sem framework) em HTML + CSS + JavaScript puro (ES Modules), com uma cena 3D de fundo (Three.js) e animações via GSAP. Este README existe pra você conseguir mexer em qualquer parte — texto, imagem, cor — sem precisar entender o projeto inteiro primeiro.
+Site estático (sem build, sem framework) em HTML + CSS + JavaScript puro (ES Modules), com uma cena 3D de fundo (Three.js), animações de seção via GSAP e a sequência de entrada (a tela cheia antes do site) via anime.js. Este README existe pra você conseguir mexer em qualquer parte — texto, imagem, cor — sem precisar entender o projeto inteiro primeiro.
 
 ## Como abrir o projeto
 
@@ -23,6 +23,7 @@ js/
   main.js                → "cérebro" do site: tema, idioma, e monta os cards dinamicamente
   translations.js        → TODO o texto do site, em pt-BR / en-US / de-DE
   animations.js          → animações (GSAP): entrada de seção, hover, cursor, etc.
+  intro.js                → (novo) sequência de ingresso (anime.js) — a tela cheia antes do site, ver seção 6
   scene.js                → a cena 3D do buraco negro (Three.js) — só existe no tema escuro
 assets/
   images/
@@ -164,7 +165,7 @@ Todas as cores do site são variáveis CSS, definidas no topo de `css/style.css`
 
 Pra mudar uma cor em todo o site (ex: a cor de destaque roxa), troque o valor de `--accent-violet` — todo lugar que usa `var(--accent-violet)` atualiza sozinho.
 
-No tema claro não existe mais o buraco negro (fica pausado e escondido por CSS, pra economizar bateria/CPU) — no lugar tem um fundo minimalista (`#light-backdrop` em `index.html`, estilizado em `css/style.css` na seção com esse mesmo nome).
+No tema claro não existe mais o buraco negro (fica pausado e escondido por CSS, pra economizar bateria/CPU) — no lugar tem um fundo minimalista (`#light-backdrop` em `index.html`, estilizado em `css/style.css` na seção com esse mesmo nome), com a planta técnica de um foguete (`.rocket-schema`) sangrando pela borda direita, com linhas de chamada apontando pra pequenas legendas (`OGIVA`, `FUSELAGEM`, `VIGIA`, `TANQUE LOX`, `EMPENA`, `PROPULSOR`) — no estilo de ilustração técnica/de patente. Bem apagada e com uma máscara de gradiente que a apaga perto da coluna de texto, pra nunca atrapalhar a leitura. Ela é só CSS (deriva/rotação/respiração bem lentas via `@keyframes rocketSchemaDrift`, sem JavaScript rodando) e encolhe em telas médias/pequenas. Pra ajustar: opacidade e tamanho estão direto na regra `.rocket-schema`; as legendas e suas linhas de chamada são os elementos `.rocket-schema__leader`/`.rocket-schema__label` dentro do `<svg>` em `index.html` — mover uma legenda é só editar as coordenadas do `d` do leader e do `x`/`y` do texto correspondente. Pra trocar a intensidade do apagamento perto do texto, mexa nos valores do `mask-image` (percentuais do gradiente).
 
 ---
 
@@ -192,7 +193,27 @@ Copie um bloco desses pra adicionar um projeto, ou apague pra remover. **Atenç�
 
 ---
 
-## 6. Animações e cena 3D (mexa só se quiser ir mais fundo)
+## 6. Sequência de ingresso (a tela cheia antes do site)
+
+Antes do conteúdo aparecer, o site mostra uma vez uma animação de entrada em tela cheia — o "horizonte de eventos" no tema escuro (anéis do buraco negro se desenhando) e a "planta do foguete" no tema claro (um desenho técnico se traçando, estilo heliográfico). É feita com **anime.js** (carregado via CDN, ver `<script type="importmap">` no topo do `index.html`) e mora inteira em **`js/intro.js`**.
+
+**Como decide qual palco mostrar:** os dois palcos (`.ingress__stage--horizon` e `.ingress__stage--blueprint`) já existem os dois no `index.html`; o CSS em `css/style.css` (seção "5. SEQUÊNCIA DE INGRESSO") mostra só o que combina com `[data-theme]` — a mesma técnica já usada pelo `#space-canvas`/`#light-backdrop`. O `js/intro.js` só anima o que já está visível.
+
+**Quando ela aparece:** uma vez por aba/sessão de navegação (guardado em `sessionStorage`, não em `localStorage` — some se fechar a aba). Recarregar a página dentro da mesma aba não mostra de novo. Se quiser que ela apareça sempre, apague a linha `sessionStorage.setItem(SESSION_KEY, "1")` em `js/intro.js`.
+
+**Acessibilidade:** quem tem "reduzir movimento" ativado no sistema operacional não vê a animação — o site aparece direto. Também dá pra pular a qualquer momento clicando no botão no canto (rótulo `ingress.skip` em `translations.js`) ou apertando `Esc`.
+
+**Se a CDN do anime.js estiver fora do ar:** o site nunca fica travado — `intro.js` percebe a falha, registra no console e mostra o conteúdo normalmente, sem animação.
+
+**Pra editar os textos** (as três linhas de cada palco e o rótulo do medidor "Aproximação"): é a chave `ingress` em `translations.js`, nos três idiomas, igual a qualquer outro texto do site (ver seção 1). Já os rótulos de cota dentro do desenho da planta (`Ø 3.2 M`, `12.4 M`, o carimbo `MOD. EC-1`) são fixos direto no SVG do `index.html` — são anotações do desenho técnico, não frases, por isso não estão em `translations.js`.
+
+**Pra ajustar cores:** os dois palcos usam as variáveis normais do tema (`--color-text`, `--color-bg`, `--accent-*`, ver seção 3) — o escuro com os acentos roxo/ciano/laranja do buraco negro real, o claro com tinta escura sobre papel quase branco, como um desenho técnico impresso (a mesma referência visual do fundo de grade `#light-backdrop`). Não existe paleta própria pro ingresso: mudar uma cor do tema muda os dois lugares.
+
+**Pra ajustar o tempo:** cada trecho da animação em `js/intro.js` tem um `delay`/`duration` em milissegundos, comentado por bloco (`playHorizonStage` e `playBlueprintStage`). Aumentar um `delay` atrasa aquele elemento; a duração total de cada palco fica em torno de 3 segundos, contando a saída.
+
+---
+
+## 7. Animações e cena 3D (mexa só se quiser ir mais fundo)
 
 - **`js/animations.js`**: todas as animações de entrada, hover e cursor, feitas com GSAP. Cada função tem comentário explicando o que faz.
 - **`js/scene.js`**: a cena 3D do buraco negro (Three.js). Só roda no tema escuro. As cores da cena por tema estão em `SCENE_PALETTE`, no topo do arquivo.
@@ -213,4 +234,6 @@ Essas duas partes são mais técnicas — dá pra editar sem saber Three.js/GSAP
 | Adicionar/remover um projeto                  | `translations.js` → `projects.items`                         |
 | Adicionar/remover um curso                    | `translations.js` → `courses.items`                          |
 | Trocar o PDF do currículo                     | `assets/cv-guilherme-andrade.pdf` (mesmo nome) ou o `href` no `index.html` |
+| Editar os textos da animação de entrada       | `translations.js` → chave `ingress`                          |
+| Fazer a animação de entrada aparecer sempre   | remover a linha `sessionStorage.setItem` em `js/intro.js`    |
 

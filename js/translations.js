@@ -25,6 +25,20 @@ export const translations = {
             experience: "Experiência",
             contact: "Contato",
         },
+        ingress: {
+            skip: "Pular introdução",
+            meterLabel: "Aproximação",
+            horizon: {
+                line1: "Sgr A* — horizonte de eventos",
+                line2: "RA 05h 35m · DEC −05° 23′",
+                line3: "Sincronizando órbita",
+            },
+            blueprint: {
+                line1: "Modelo EC-1 · propulsor experimental",
+                line2: "Escala 1:120",
+                line3: "Status: pré-lançamento",
+            },
+        },
         hero: {
             eyebrow: "RA 05h 35m · DEC −05° 23′ · TERRA",
             name: "Edgard Costa",
@@ -35,7 +49,7 @@ export const translations = {
                 "Entusiasta de Astrofísica",
             ],
             description:
-                "Curto entender como as coisas funcionam por dentro — um sistema em produção ou uma estrela colapsando, tanto faz. Escrevo código com essa mesma lógica: primeiro entender, depois construir.",
+                "Curto entender como as coisas funcionam por dentro, seja um sistema em produção ou uma estrela colapsando. Escrevo código com essa mesma lógica: primeiro entender, depois construir.",
             ctaPrimary: "Baixar CV",
             ctaSecondary: "Ver Projetos",
             scroll: "Explorar",
@@ -44,8 +58,8 @@ export const translations = {
             eyebrow: "Sobre mim",
             title: "Engenharia no dia a dia, astrofísica nas horas vagas",
             p1: "Sou desenvolvedor full stack. A maior parte do meu tempo fica entre back-end e arquitetura, mas gosto de acompanhar o projeto até a interface. Ultimamente tenho testado bastante IA generativa em cenário real, não só em protótipo de fim de semana.",
-            p2: "Fora do código, estudo Astrofísica por conta própria — mecânica orbital, formação estelar, esse tipo de coisa. Não tem relação direta com o trabalho, é curiosidade mesmo. Mas ajuda a treinar paciência com problema que não tem solução óbvia de cara.",
-            p3: "Nos últimos meses o foco tem sido fechar lacuna de fundamentos que a faculdade ainda não cobriu, e testar IA generativa fora do hype — sem pressa, mas sem parar.",
+            p2: "Fora do código, estudo Astrofísica por conta própria. Mecânica orbital, formação estelar, esse tipo de coisa. Não tem relação direta com o trabalho, é curiosidade mesmo. Mas ajuda a treinar paciência com problema que não tem solução óbvia de cara.",
+            p3: "Nos últimos meses o foco tem sido fechar lacuna de fundamentos que a faculdade ainda não cobriu, e testar IA generativa sem pressa, mas sem parar.",
             stats: [
                 { value: "2+", label: "Anos estudando Engenharia de Software" },
                 { value: "6+", label: "Tecnologias em uso ativo" },
@@ -60,7 +74,7 @@ export const translations = {
                 course: "Engenharia de Software",
                 period: "Em andamento",
                 description:
-                    "Curso focado em arquitetura de sistemas, dados e cloud, com boa dose de aplicação prática.",
+                    "Curso focado em arquitetura de sistemas, dados e tecnologia atual, me preparando para o mercado de trabalho.",
             },
             fatec: {
                 institution: "FATEC",
@@ -76,7 +90,7 @@ export const translations = {
                 { title: "GenAIs", period: "Em andamento", tag: "IA" },
                 { title: "Machine Learning", period: "Em andamento", tag: "ML" },
                 { title: "Deep Learning", period: "Planejado", tag: "DL" },
-                { title: "Large Language Models (LLMs)", period: "Em andamento", tag: "LLM" },
+                { title: "Engenharia de Software", period: "Em andamento", tag: "ES" },
                 { title: "JavaScript", period: "Em andamento", tag: "JS" },
                 { title: "Astrofísica Observacional", period: "Estudo autônomo", tag: "Astro" },
             ],
@@ -93,10 +107,11 @@ export const translations = {
             viewDemo: "Demo",
             items: [
                 {
-                    title: "Orbit — Dashboard de Monitoramento",
+                    title: "TwentyTwo Imports — E-Commerce",
+                    image: "assets/images/logos/newlogo.jpeg",
                     description:
-                        "Painel em tempo real para observabilidade de APIs, com alertas inteligentes e visualização de métricas.",
-                    tags: ["React", "Node.js", "MongoDB"],
+                        "Site de e-commerce para a empresa TwentyTwo Imports, com dashboard de administração, catálogo de produtos e sistema de checkout.",
+                    tags: ["React", "Typescript", "Supabase"],
                     category: "web",
                 },
                 {
@@ -121,12 +136,12 @@ export const translations = {
             viewCredential: "Ver credencial",
             items: [
                 {
-                    title: "AWS Certified Cloud Practitioner",
-                    issuer: "Amazon Web Services",
-                    date: "2025",
-                    description: "Fundamentos de nuvem, arquitetura, segurança e modelo de precificação da AWS.",
-                    image: "assets/images/certificates/aws-cloud-practitioner.svg",
-                    url: "#",
+                    title: "Quantum Enigma",
+                    issuer: "IBM",
+                    date: "2026",
+                    description: "This credential earner has a foundational understanding of quantum computing, including principles such as quantum superposition, entanglement, and measurement",
+                    image: "assets/images/certificates/quantum-enigmas.png",
+                    url: "https://www.credly.com/badges/1ad395cb-45c5-46a4-8c0b-4282011b51f4/public_url",
                 },
                 {
                     title: "Oracle Cloud Infrastructure — AI Foundations",
@@ -184,6 +199,20 @@ export const translations = {
             certificates: "Certificates",
             experience: "Experience",
             contact: "Contact",
+        },
+        ingress: {
+            skip: "Skip intro",
+            meterLabel: "Approach",
+            horizon: {
+                line1: "Sgr A* — event horizon",
+                line2: "RA 05h 35m · DEC −05° 23′",
+                line3: "Syncing orbit",
+            },
+            blueprint: {
+                line1: "Model EC-1 · experimental thruster",
+                line2: "Scale 1:120",
+                line3: "Status: pre-launch",
+            },
         },
         hero: {
             eyebrow: "RA 05h 35m · DEC −05° 23′ · EARTH",
@@ -256,7 +285,7 @@ export const translations = {
                 {
                     title: "Nova — LLM Assistant",
                     description:
-                        "Conversational assistant built on top of the OpenAI API with context memory and external tools.",
+                        "This credential earner has a foundational understanding of quantum computing, including principles such as quantum superposition, entanglement, and measurement",
                     tags: ["Python", "OpenAI API", "FastAPI"],
                     category: "ai",
                 },
@@ -336,6 +365,20 @@ export const translations = {
             certificates: "Zertifikate",
             experience: "Erfahrung",
             contact: "Kontakt",
+        },
+        ingress: {
+            skip: "Intro überspringen",
+            meterLabel: "Annäherung",
+            horizon: {
+                line1: "Sgr A* — Ereignishorizont",
+                line2: "RA 05h 35m · DEC −05° 23′",
+                line3: "Orbit wird synchronisiert",
+            },
+            blueprint: {
+                line1: "Modell EC-1 · experimentales Triebwerk",
+                line2: "Maßstab 1:120",
+                line3: "Status: Vorstart",
+            },
         },
         hero: {
             eyebrow: "RA 05h 35m · DEC −05° 23′ · ERDE",
