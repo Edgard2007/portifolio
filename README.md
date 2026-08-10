@@ -1,4 +1,4 @@
-# Portfólio — Edgard Costa
+# Portifólio — Edgard Costa
 
 Site estático (sem build, sem framework) em HTML + CSS + JavaScript puro (ES Modules), com uma cena 3D de fundo (Three.js), animações de seção via GSAP e a sequência de entrada (a tela cheia antes do site) via anime.js. Portifólio pessoal
 
