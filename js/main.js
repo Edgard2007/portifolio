@@ -314,7 +314,14 @@ function renderProjectCards(locale) {
         card.setAttribute("data-category", project.category);
 
         const media = el("div", "project-card__media");
-        media.setAttribute("aria-hidden", "true");
+
+        if (project.image) {
+            const thumb = img("project-card__thumb", project.image, project.title);
+            thumb.addEventListener("error", () => thumb.remove());
+            media.appendChild(thumb);
+        } else {
+            media.setAttribute("aria-hidden", "true");
+        }
 
         const body = el("div", "project-card__body");
         const title = el("h3", "project-card__title", project.title);
@@ -329,8 +336,10 @@ function renderProjectCards(locale) {
         codeLink.textContent = viewCode;
         codeLink.setAttribute("data-ripple", "");
 
-        const demoLink = el("a", "project-card__link project-card__link--primary");
-        demoLink.href = "#";
+        const demoLink = el("a", "project-card__link project-card__link--primary", viewDemo);
+        demoLink.href = project.url || "#";
+        demoLink.target = "_blank";
+        demoLink.rel = "noopener noreferrer"
         demoLink.textContent = viewDemo;
         demoLink.setAttribute("data-ripple", "");
 
