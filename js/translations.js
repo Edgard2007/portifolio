@@ -115,18 +115,20 @@ export const translations = {
                     url: "https://twentytwoimports.com.br",
                 },
                 {
-                    title: "Nova — Assistente com LLM",
+                    title: "Fartura - GS",
+                    image: "assets/images/logos/F.png",
                     description:
-                        "Assistente conversacional construído sobre a OpenAI API com memória de contexto e ferramentas externas.",
-                    tags: ["Python", "OpenAI API", "FastAPI"],
-                    category: "ai",
+                        "",
+                    tags: ["React", "Javascript", "JSX"],
+                    category: "web",
+                    url: "https://fartura.vercel.app/"
                 },
                 {
-                    title: "Pulsar — CLI de Automação",
+                    title: "BenchMetrics",
                     description:
-                        "Ferramenta de linha de comando para automatizar deploys e rotinas de desenvolvimento local.",
-                    tags: ["Node.js", "TypeScript", "Docker"],
-                    category: "tools",
+                        "Site para verificação de espeficações de hardware em jogos",
+                    tags: ["HTML", "CSS"],
+                    category: "web",
                 },
             ],
         },
@@ -160,12 +162,11 @@ export const translations = {
                     
                 },
                 {
-                    title: "Quantum Enigma",
-                    issuer: "IBM",
+                    title: "Desevolvimento Back-end",
+                    issuer: "Alura",
                     date: "2026",
-                    description: "Compreensão fundamental da computação quântica, incluindo princípios como superposição quântica, emaranhamento e medição.",
-                    image: "assets/images/certificates/quantum-enigmas.png",
-                    url: "https://www.credly.com/badges/1ad395cb-45c5-46a4-8c0b-4282011b51f4/public_url",
+                    description: "Conjunto de certificados, seguindo a carreira de estudos sobre Desenvolvimento Back-end com o Node.js",
+                    image: "assets/images/certificates/alura.png",
                 },
                 {
                     title: "Quantum Enigma",
@@ -307,21 +308,22 @@ export const translations = {
                     tags: ["React", "Typescript", "Supabase"],
                     category: "web",
                     url: "https://twentytwoimports.com.br/",
-                },
-
-                
+                },                
                 {
-                    title: "Nova — LLM Assistant",
+                    title: "Fartura - GS",
+                    image: "assets/images/logos/F.png",
                     description:
-                        "This credential earner has a foundational understanding of quantum computing, including principles such as quantum superposition, entanglement, and measurement",
-                    tags: ["Python", "OpenAI API", "FastAPI"],
-                    category: "ai",
+                        "",
+                    tags: ["React", "Javascript", "JSX"],
+                    category: "web",
+                    url: "https://fartura.vercel.app/"
                 },
                 {
-                    title: "Pulsar — Automation CLI",
-                    description: "Command-line tool to automate deploys and local development routines.",
-                    tags: ["Node.js", "TypeScript", "Docker"],
-                    category: "tools",
+                    title: "BenchMetrics",
+                    description:
+                        "Site para verificação de espeficações de hardware em jogos",
+                    tags: ["HTML", "CSS"],
+                    category: "web",
                 },
             ],
         },
@@ -503,18 +505,20 @@ export const translations = {
                     url: "https://twentytwoimports.com.br/",
                 },
                 {
-                    title: "Nova — LLM-Assistent",
+                    title: "Fartura - GS",
+                    image: "assets/images/logos/F.png",
                     description:
-                        "Konversations-Assistent auf Basis der OpenAI API mit Kontextgedächtnis und externen Tools.",
-                    tags: ["Python", "OpenAI API", "FastAPI"],
-                    category: "ai",
+                        "",
+                    tags: ["React", "Javascript", "JSX"],
+                    category: "web",
+                    url: "https://fartura.vercel.app/"
                 },
                 {
-                    title: "Pulsar — Automatisierungs-CLI",
+                   title: "BenchMetrics",
                     description:
-                        "Kommandozeilen-Tool zur Automatisierung von Deploys und lokalen Entwicklungsroutinen.",
-                    tags: ["Node.js", "TypeScript", "Docker"],
-                    category: "tools",
+                        "Site para verificação de espeficações de hardware em jogos",
+                    tags: ["HTML", "CSS"],
+                    category: "web",
                 },
             ],
         },
