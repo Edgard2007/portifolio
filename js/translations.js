@@ -50,7 +50,7 @@ export const translations = {
             ],
             description:
                 "Curto entender como as coisas funcionam por dentro, seja um sistema em produção ou uma estrela colapsando. Escrevo código com essa mesma lógica: primeiro entender, depois construir.",
-            ctaPrimary: "Baixar CV",
+            ctaPrimary: "Linkedln",
             ctaSecondary: "Ver Projetos",
             scroll: "Explorar",
         },
@@ -245,7 +245,7 @@ export const translations = {
             roles: ["Software Engineer", "AI Engineering", "Full Stack Developer", "Astrophysics Enthusiast"],
             description:
                 "I like understanding how things work underneath — a production system or a collapsing star, doesn't matter. I write code with that same instinct: understand first, build second.",
-            ctaPrimary: "Download CV",
+            ctaPrimary: "Linkedln",
             ctaSecondary: "View Projects",
             scroll: "Explore",
         },
@@ -439,7 +439,7 @@ export const translations = {
             roles: ["Softwareentwickler", "KI-Engineering", "Full-Stack-Entwickler", "Astrophysik-Enthusiast"],
             description:
                 "Mich interessiert, wie Dinge unter der Oberfläche funktionieren — ob Produktionssystem oder kollabierender Stern, spielt keine Rolle. Ich schreibe Code mit demselben Instinkt: erst verstehen, dann bauen.",
-            ctaPrimary: "Lebenslauf",
+            ctaPrimary: "Linkedln",
             ctaSecondary: "Projekte ansehen",
             scroll: "Entdecken",
         },
